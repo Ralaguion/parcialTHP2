@@ -1,4 +1,5 @@
 import Models from "./DAO/model.js";
+import ModelsFS from "./DAO/modelFS.js";
 
 
 class Factory {
@@ -8,6 +9,9 @@ class Factory {
             case 'memory':
                 console.log('Using memory persistence');
                 return new Models()
+            case 'file':
+                console.log('Using file persistence');
+                return new ModelsFS()    
             default:
                 throw new Error('Unknown type');
         }
