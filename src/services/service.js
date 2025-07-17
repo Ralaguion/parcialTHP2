@@ -3,29 +3,30 @@ import validation from "../utils/validation.js";
 
 class Service {
     constructor() {
-        this.facturas = Factory.get(process.env.PERSISTENCIA);
+        this.aviones = Factory.get("memory");
         
         }
 
-
-
-    postFactura = async (factura) => {
-        const facturaValida = validation.schema.validate(factura);
-        if(facturaValida.error) {
-            throw new Error("Factura no válida");
+    guardarOActualizarAvion = async (avion) => {    
+        const avionValidado = validation.schema.validate(avion);
+        if (avionValidado.error) {
+            throw new Error(avionValidado.error.details[0].message);
         }
-        return await this.facturas.postFactura(factura);
+        return await this.aviones.guardarOActualizar(avion);
+
+    }
+     buscarAvionesCercanos = async (avion, distanciaMaxima ) => {
+     return await this.aviones.getAvionesCercanos(avion, distanciaMaxima);
+     }
+
+      obtenerAvionPorId = async (id) => {
+            return await this.aviones.getPorId(id);
+      }
+    obtenerAviones = async () => {
+        return await this.aviones.getAll();
     }
 
-    getFacturas = async () => {
-        return await this.facturas.getFacturas();
-    }
-    
-    getFacturasPorTipo = async (tipo) => {
-        return await this.facturas.getFacturasPorTipo(tipo);
-    }
-    getFacturaPorEstado = async (estado) => {
-        return await this.facturas.getFacturaPorEstado(estado);
-    }
-    
-    }export default Service;
+
+
+ 
+}export default Service;

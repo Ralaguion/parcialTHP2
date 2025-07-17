@@ -1,32 +1,37 @@
 
-class Models {
-    constructor() {
-          this.facturas = [ 
-        ];
-        this.id = 1;
+class AvionModelMemory {
+  constructor() {
+    this.aviones = [];
+  }
 
-    }
+  guardarOActualizar = async (nuevoAvion) => {
+   
+      const index = this.aviones.findIndex(avion => avion.id === nuevoAvion.id);
 
-    postFactura = async (factura) => {
-        factura.id = this.id++;
-        this.facturas.push(factura);
-        return await factura;
-    }
-       
-    getFacturas = async () => {
-        return  await this.facturas;
-    }
+   if (index !== -1) {
+    this.aviones[index] = nuevoAvion;
+  } else {
+    this.aviones.push(nuevoAvion); 
+    return nuevoAvion;
+  }
+  }
+  getAll = async () => {
+    return this.aviones;
+  }
 
-    getFacturasPorTipo = async (tipo) => {
-        return await this.facturas.filter(factura => factura.tipo === tipo);
-    }
-    getFacturaPorEstado = async (estado) => {
-        return await this.facturas.filter(factura => factura.estado === estado);
-    }
+  getPorId = async (id) => {
+    return this.aviones.find(avion => avion.id === id);
+  }
 
+  getAvionesCercanos = async (avion, distanciaMaxima) => {
+    return this.aviones.filter(a => a.id !== avion.id).filter(a => {
+      const dx = a.xa - avion.xa;
+      const dy = a.ya - avion.ya;
+      const dz = a.za - avion.za;
+      const distancia = Math.sqrt(dx ** 2 + dy ** 2 + dz ** 2);
+      return distancia < distanciaMaxima;
+    });
+  }
+}
 
-
-    
-
-
-}export default Models;
+export default AvionModelMemory;

@@ -1,5 +1,6 @@
-import Models from "./DAO/model.js";
-import ModelsFS from "./DAO/modelFS.js";
+import AvionModelMemory from "./DAO/model.js";
+
+
 
 
 class Factory {
@@ -8,10 +9,7 @@ class Factory {
 
             case 'memory':
                 console.log('Using memory persistence');
-                return new Models()
-            case 'file':
-                console.log('Using file persistence');
-                return new ModelsFS()    
+                return new AvionModelMemory() 
             default:
                 throw new Error('Unknown type');
         }
